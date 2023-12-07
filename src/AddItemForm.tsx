@@ -1,15 +1,18 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import {Button, IconButton, TextField} from "@mui/material";
+import {AddBox} from "@mui/icons-material";
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
-export default function AddItemForm(props: AddItemFormPropsType) {
+
+function AddItemForm(props: AddItemFormPropsType) {
     let [title, setTitle] = useState('')
     let [error, setError] = useState<string | null>(null)
 
     function addItem() {
         if (title.trim() !== '') {
-            props.addItem(title)
+            props.addItem(title);
             setTitle('')
         } else {
             setError("Title is required")
@@ -29,12 +32,18 @@ export default function AddItemForm(props: AddItemFormPropsType) {
 
     return (
         <div>
-            <input value={title}
-                   onKeyPress={onKeyPressHandler}
-                   className={error ? 'error' : ''}
-                   onChange={onChangeHandler}/>
-            <button onClick={addItem}>+</button>
-            {error && <div className={'error-message'}>{error}</div>}
+            <TextField value={title}
+                       onKeyPress={onKeyPressHandler}
+                       error={!!error}
+                       onChange={onChangeHandler}
+                       label={"Title"}
+                       helperText={error}
+                       className={error ? 'error' : ''}
+                       variant={"outlined"}/>
+            <IconButton color={"primary"}  onClick={addItem}>
+                <AddBox/></IconButton>
         </div>
     )
 }
+
+export default AddItemForm
